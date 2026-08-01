@@ -28,16 +28,16 @@ const CONFIG = {
 
   // ---- Puzzle 4 : Memory question --------------------------------------
   // EDIT ME: ask about something only the two of you would know.
-  PUZZLE4_QUESTION: "Where did we go on our very first date?",
-  PUZZLE4_ANSWERS: ["cafe", "the cafe", "coffee shop", "our cafe"],
+  PUZZLE4_QUESTION: "what did i wear when we first meet ?",
+  PUZZLE4_ANSWERS: ["kapde", "cloths"],
 
   // ---- Final level : six hearts ----------------------------------------
   FAKE_HEART_MESSAGES: [
-    "Nope ❤️",
-    "Almost...",
-    "You're getting closer...",
-    "Still not the real secret.",
-    "You really thought it was this easy?"
+    "tera katgaya ",
+    "because",
+    "i have an girlfriend",
+    "Sorry sorry...",
+    "i have an boy friend (jk)"
   ],
 
   FIRST_ENVELOPE_TEXT: "You found a message... but this still isn't the real one.",
