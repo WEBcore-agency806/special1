@@ -17,7 +17,7 @@ const CONFIG = {
 
   // ---- Puzzle 2 : Special date ---------------------------------------
   // EDIT ME: set the real date that matters to you two.
-  PUZZLE2_DATE: { day: 14, month: 2, year: 2023 },
+  PUZZLE2_DATE: { day: 30, month: 5, year: 2026 },
 
   // ---- Puzzle 3 : Caesar cipher ---------------------------------------
   // EDIT ME: change the secret phrase and/or the shift amount.
