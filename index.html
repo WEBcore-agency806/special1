@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+<title>A Secret Left For You</title>
+
+<!-- Fonts: a warm handwritten display face + a soft rounded body face -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- ===================== AMBIENT BACKGROUND LAYERS ===================== -->
+<div class="bg-glow" aria-hidden="true"></div>
+<canvas id="fireflies-canvas" aria-hidden="true"></canvas>
+<div id="floating-hearts-layer" aria-hidden="true"></div>
+<canvas id="confetti-canvas" aria-hidden="true"></canvas>
+
+<!-- ===================== TOP UTILITY BAR ===================== -->
+<div class="utility-bar">
+  <button id="sound-toggle" class="icon-btn" aria-label="Toggle sound" title="Toggle sound">
+    <svg id="sound-on-icon" viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M4 9v6h4l5 5V4L8 9H4zm11.5 3a4.5 4.5 0 0 0-2.5-4.03v8.06A4.5 4.5 0 0 0 15.5 12z"/></svg>
+    <svg id="sound-off-icon" viewBox="0 0 24 24" width="20" height="20" style="display:none"><path fill="currentColor" d="M16.5 12A4.5 4.5 0 0 0 14 8v2.17l2.45 2.45c.03-.2.05-.4.05-.62zM4 9v6h4l5 5v-4.17l-6-6L4 9zm14.73-3.27L4.27 20.2l1.06 1.06L19.8 6.79l-1.07-1.06zM19 12c0 .94-.2 1.82-.55 2.62l1.52 1.52A8.94 8.94 0 0 0 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71z"/></svg>
+  </button>
+  <button id="restart-btn" class="icon-btn" aria-label="Restart the story" title="Restart">
+    <svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M12 4V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z"/></svg>
+  </button>
+</div>
+
+<!-- ===================== PROGRESS INDICATOR ===================== -->
+<div id="progress-wrap" class="progress-wrap hidden">
+  <div class="progress-track">
+    <div id="progress-fill" class="progress-fill"></div>
+  </div>
+  <span id="progress-label" class="progress-label">Level 1 of 5</span>
+</div>
+
+<!-- ===================== LOADING SCREEN ===================== -->
+<section id="loading-screen" class="screen loading-screen">
+  <div class="loader-heart">
+    <svg viewBox="0 0 32 29" width="56" height="56">
+      <path fill="currentColor" d="M23.6 0c-3 0-5.7 1.6-7.6 4.1C14.1 1.6 11.4 0 8.4 0 3.8 0 0 3.7 0 8.4c0 8.4 10.6 14.6 15.1 19 .5.5 1.3.5 1.8 0 4.5-4.4 15.1-10.6 15.1-19C32 3.7 28.2 0 23.6 0z"/>
+    </svg>
+  </div>
+  <p class="loading-text">preparing something special<span class="dots"><span>.</span><span>.</span><span>.</span></span></p>
+</section>
+
+<!-- ===================== LANDING SCREEN ===================== -->
+<section id="landing-screen" class="screen">
+  <div class="glass-card landing-card">
+    <p class="eyebrow">for you, only you</p>
+    <h1 class="landing-title">Someone left a secret<br/>just for you<span class="blink-heart">&hearts;</span></h1>
+    <p class="landing-sub">Five little locks stand between you and it. Are you ready?</p>
+    <button id="begin-btn" class="primary-btn">
+      <span>Begin</span>
+      <svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M8 5v14l11-7z"/></svg>
+    </button>
+  </div>
+</section>
+
+<!-- ===================== PUZZLE 1 : ROMANTIC RIDDLE ===================== -->
+<section id="level-1" class="screen level hidden" data-level="1">
+  <div class="glass-card level-card">
+    <p class="level-tag">Lock One &middot; A Riddle</p>
+    <h2 class="level-title">A little riddle for a big heart</h2>
+    <p id="riddle-text" class="level-prompt"></p>
+    <form id="form-1" class="answer-form" autocomplete="off">
+      <input id="input-1" type="text" class="answer-input" placeholder="Type your answer..." />
+      <button type="submit" class="primary-btn small">Unlock <svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M8 5v14l11-7z"/></svg></button>
+    </form>
+    <p id="feedback-1" class="feedback" role="status"></p>
+    <p id="hint-1" class="hint hidden"></p>
+  </div>
+</section>
+
+<!-- ===================== PUZZLE 2 : SPECIAL DATE ===================== -->
+<section id="level-2" class="screen level hidden" data-level="2">
+  <div class="glass-card level-card">
+    <p class="level-tag">Lock Two &middot; A Date to Remember</p>
+    <h2 class="level-title">Do you remember the day it all began?</h2>
+    <p class="level-prompt">Type the date that changed everything &mdash; any format works.</p>
+    <form id="form-2" class="answer-form" autocomplete="off">
+      <input id="input-2" type="text" class="answer-input" placeholder="e.g. 14 Feb 2023, or 14/02/2023..." />
+      <button type="submit" class="primary-btn small">Unlock <svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M8 5v14l11-7z"/></svg></button>
+    </form>
+    <p id="feedback-2" class="feedback" role="status"></p>
+  </div>
+</section>
+
+<!-- ===================== PUZZLE 3 : CAESAR CIPHER ===================== -->
+<section id="level-3" class="screen level hidden" data-level="3">
+  <div class="glass-card level-card">
+    <p class="level-tag">Lock Three &middot; A Secret Code</p>
+    <h2 class="level-title">Crack the cipher</h2>
+    <p class="level-prompt">Each letter has been shifted. Decode the message below and type what it really says.</p>
+    <p id="cipher-text" class="cipher-display"></p>
+    <form id="form-3" class="answer-form" autocomplete="off">
+      <input id="input-3" type="text" class="answer-input" placeholder="Type the decoded message..." />
+      <button type="submit" class="primary-btn small">Unlock <svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M8 5v14l11-7z"/></svg></button>
+    </form>
+    <p id="feedback-3" class="feedback" role="status"></p>
+    <p id="hint-3" class="hint hidden"></p>
+  </div>
+</section>
+
+<!-- ===================== PUZZLE 4 : MEMORY QUESTION ===================== -->
+<section id="level-4" class="screen level hidden" data-level="4">
+  <div class="glass-card level-card">
+    <p class="level-tag">Lock Four &middot; A Memory</p>
+    <h2 class="level-title">Test your memory</h2>
+    <p id="memory-question" class="level-prompt"></p>
+    <form id="form-4" class="answer-form" autocomplete="off">
+      <input id="input-4" type="text" class="answer-input" placeholder="Type your answer..." />
+      <button type="submit" class="primary-btn small">Unlock <svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M8 5v14l11-7z"/></svg></button>
+    </form>
+    <p id="feedback-4" class="feedback" role="status"></p>
+  </div>
+</section>
+
+<!-- ===================== FINAL LEVEL : HEART SELECTION ===================== -->
+<section id="level-5" class="screen level hidden" data-level="5">
+  <div class="glass-card level-card hearts-card">
+    <p class="level-tag">Final Lock &middot; The Real Secret</p>
+    <h2 class="level-title">Choose a heart...</h2>
+    <p id="hearts-sub" class="level-prompt">One of these holds the real secret. The rest are just teasing you.</p>
+
+    <div id="hearts-grid" class="hearts-grid"></div>
+
+    <p id="fake-popup" class="fake-popup hidden"></p>
+  </div>
+</section>
+
+<!-- ===================== ENVELOPE / REVEAL STAGE ===================== -->
+<section id="reveal-stage" class="screen hidden">
+  <div id="envelope-wrap" class="envelope-wrap">
+    <div id="envelope" class="envelope">
+      <div class="envelope-back"></div>
+      <div class="envelope-letter">
+        <p id="envelope-letter-text"></p>
+      </div>
+      <div class="envelope-flap"></div>
+    </div>
+    <p id="envelope-caption" class="envelope-caption"></p>
+  </div>
+
+  <div id="darkness-overlay" class="darkness-overlay hidden"></div>
+  <p id="last-secret-line" class="last-secret-line hidden">There was one last secret hidden for you...</p>
+
+  <div id="golden-envelope-wrap" class="envelope-wrap hidden">
+    <div id="golden-envelope" class="envelope golden">
+      <div class="envelope-back"></div>
+      <div class="envelope-flap"></div>
+    </div>
+    <p class="envelope-caption golden-caption">Click to open</p>
+  </div>
+</section>
+
+<!-- ===================== FINAL MESSAGE SCREEN ===================== -->
+<section id="message-screen" class="screen hidden">
+  <div id="stars-layer" class="stars-layer" aria-hidden="true"></div>
+  <div class="glass-card message-card">
+    <p id="typewriter-message" class="typewriter-message"></p>
+    <p id="signoff" class="signoff hidden">Happy Girlfriend's Day <span class="heart-red">&hearts;</span></p>
+    <button id="replay-btn" class="primary-btn hidden">
+      <span>Replay Our Story</span>
+      <svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z"/></svg>
+    </button>
+  </div>
+</section>
+
+<script src="script.js"></script>
+</body>
+</html>
